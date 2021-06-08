@@ -1,0 +1,63 @@
+import pandas as pd
+
+caminho = '/content/drive/MyDrive/Classroom/Data Exploratory Analysis 2021 - MBA BI_BigData_23/DNSE2017.csv'
+
+sinasc = pd.read_csv(caminho, dtype=str)
+sinasc.head(5)
+
+sinasc.columns
+
+sinasc.shape
+
+sinasc[['contador','IDADEMAE', 'PESO','QTDFILVIVO', 'QTDFILMORT']]
+
+#1.Qual a média da idade da mãe, peso, apgar 1 min, apgar 5 min, quantidade de filhos vivos e quantidade de filhos mortos?
+campos_mediana = sinasc[['PESO','IDADEMAE','QTDFILVIVO','QTDFILMORT','APGAR1','APGAR5']]
+medianas = campos_mediana.median().to_frame()
+medianas
+
+#2Qual a idade tal que metade das idades das mães são menores que ela (mediana)?
+campos_mediana = sinasc[['IDADEMAE']]
+medianas = campos_mediana.median().to_frame()
+medianas
+
+#3Qual o apgar de 1 min que mais aparece (moda)?
+sinasc[['APGAR1']].mode()
+
+#4Qual o apgar de 5 minutos que mais aparece?
+sinasc[['APGAR5']].mode()
+
+sinasc.ESTCIVMAE.value_counts
+
+
+#5Qual o peso da criança tal que 10% dos pesos são menores (P10)?
+campos_quantis = sinasc[['PESO']]
+quantis = campos_quantis.quantile([0.1])
+quantis
+
+
+#6Qual o peso da criança tal que 75% dos pesos são menores (Q3)?
+campos_quantis = sinasc[['PESO']]
+quantis = campos_quantis.quantile([0.75])
+quantis
+
+
+#7Qual a quantidade de filhos mortos que mais aparece?
+sinasc['QTDFILMORT'].mode()
+
+
+#8Qual a média de idade de mães solteiras?
+sinascSE2 = sinasc[(sinasc.ESTCIVMAE == '1')]
+sinascSE2.IDADEMAE.mean
+
+sinasc[~sinasc.IDADEPAI.isna()]['IDADEPAI']
+
+escolaridade. QTDFILVIVO.mean
+
+#9 Qual a quantidade de filhos vivos das mães com até 3 anos de escolaridade tal que 25% dessa quantidade são menores (Q1)?
+escolaridade = sinasc[(sinasc.ESCMAE == '1') | (sinasc.ESCMAE == '2')]
+escolaridade.QTDFILVIVO.describe()
+
+#10Qual a moda da idade das mães para as crianças que nasceram com anomalia congênita?
+anomalia = sinasc[(sinasc.IDANOMAL == '1')]
+anomalia.IDADEMAE.mode()
